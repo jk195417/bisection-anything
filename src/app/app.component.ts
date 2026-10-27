@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
-  template: `
+    selector: 'app-root',
+    imports: [RouterOutlet, RouterLink, RouterLinkActive],
+    template: `
     <h1 class="text-center">Bisection Anything</h1>
     <div class="d-flex">
       <nav class="nav nav-underline flex-column p-2">
@@ -41,6 +40,6 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
       </div>
     </div>
   `,
-  styles: ``,
+    styles: ``
 })
 export class AppComponent {}
