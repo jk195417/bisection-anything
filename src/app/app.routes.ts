@@ -23,4 +23,9 @@ export const routes: Routes = [
         (it) => it.BracketChartComponent
       ),
   },
+  {
+    path: 'share',
+    loadComponent: () =>
+      import('./pages/share/share.component').then((it) => it.ShareComponent),
+  },
 ];
