@@ -1,14 +1,45 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   template: `
-    <h1>Bisection Anything</h1>
+    <h1 class="text-center">Bisection Anything</h1>
+    <div class="d-flex">
+      <nav class="nav nav-underline flex-column p-2">
+        <a
+          class="nav-link"
+          routerLink="config"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          config
+        </a>
 
-    <router-outlet></router-outlet>
+        <a
+          class="nav-link"
+          routerLink="compare"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          compare
+        </a>
+
+        <a
+          class="nav-link"
+          routerLink="bracket-chart"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          bracket chart
+        </a>
+      </nav>
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
   `,
   styles: ``,
 })
