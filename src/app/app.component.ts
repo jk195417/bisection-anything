@@ -40,7 +40,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
       </div>
     </div>
   `,
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styles: ``
 })
 export class AppComponent {}
