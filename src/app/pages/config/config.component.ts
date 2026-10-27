@@ -18,7 +18,7 @@ import { SessionStore } from '../../core/session-store';
     @if (store.session(); as session) {
       <div class="alert alert-secondary d-flex flex-wrap align-items-center gap-2">
         <span class="me-auto">
-          進行中：<strong>{{ session.title || '未命名' }}</strong>
+          {{ store.finished() ? '已完成' : '進行中' }}：<strong>{{ session.title || '未命名' }}</strong>
           （{{ store.progress().done }} / {{ store.progress().total }} 次比較）
         </span>
         <a class="btn btn-sm btn-primary" [routerLink]="store.finished() ? '/bracket-chart' : '/compare'">

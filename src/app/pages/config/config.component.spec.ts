@@ -53,4 +53,15 @@ describe('ConfigComponent', () => {
     });
     expect(navigate).toHaveBeenCalledWith('/compare');
   });
+
+  it('labels the saved session as in progress or finished', async () => {
+    const store = TestBed.inject(SessionStore);
+    store.start('午餐', 'elimination', ['a', 'b'], false);
+    await fixture.whenStable();
+    expect(element.querySelector('.alert')?.textContent).toContain('進行中');
+
+    store.pick(0);
+    await fixture.whenStable();
+    expect(element.querySelector('.alert')?.textContent).toContain('已完成');
+  });
 });
