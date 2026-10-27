@@ -22,7 +22,7 @@ describe('CompareComponent', () => {
   });
 
   function options(): string[] {
-    return Array.from(element.querySelectorAll('.option'), (it) =>
+    return Array.from(element.querySelectorAll('.option-name'), (it) =>
       it.textContent!.trim(),
     );
   }
@@ -48,7 +48,7 @@ describe('CompareComponent', () => {
 
     await press('ArrowRight');
     expect(element.textContent).toContain('比較完成');
-    expect(element.textContent).toContain('🏆 b');
+    expect(element.querySelector('.winner')?.textContent?.trim()).toBe('b');
   });
 
   it('undoes the last pick with Backspace', async () => {

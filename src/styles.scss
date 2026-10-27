@@ -1,3 +1,56 @@
-/* You can add global styles to this file, and also import other style files */
+@use "bootstrap/scss/bootstrap" with (
+  $primary: #4f46e5,
+  $border-radius: 0.5rem,
+  $border-radius-lg: 0.75rem,
+  $font-family-sans-serif: (
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "PingFang TC",
+    "Microsoft JhengHei",
+    "Noto Sans TC",
+    sans-serif
+  ),
+  $link-decoration: none
+);
 
-@use "bootstrap/scss/bootstrap";
+body {
+  background-color: #f5f6fa;
+}
+
+/* Shared page header: title on the left, actions on the right. */
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+.panel {
+  background: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color-translucent);
+  border-radius: var(--bs-border-radius-lg);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  padding: 1.5rem;
+
+  @include bootstrap.media-breakpoint-down(sm) {
+    padding: 1rem;
+  }
+}
+
+kbd {
+  background: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
+  border-bottom-width: 2px;
+  color: var(--bs-body-color);
+  font-size: 0.75em;
+  padding: 0.1rem 0.4rem;
+}

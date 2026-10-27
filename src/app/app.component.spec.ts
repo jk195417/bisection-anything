@@ -29,7 +29,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const links = Array.from(
       (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLAnchorElement>(
-        'header a',
+        'header a[target=_blank]',
       ),
     );
     expect(links.map((it) => [it.textContent?.trim(), it.href, it.target])).toEqual([

@@ -30,7 +30,7 @@ describe('BracketChartComponent', () => {
     expect(element.querySelectorAll('.match').length).toBe(2 + 1 + 1);
     expect(element.textContent).toContain('輪空');
     expect(element.textContent).toContain('四強');
-    expect(element.textContent).toContain('🏆 a');
+    expect(element.querySelector('.champion')?.textContent?.trim()).toBe('a');
     expect(element.textContent).not.toContain('進行中');
   });
 
