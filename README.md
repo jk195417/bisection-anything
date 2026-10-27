@@ -33,3 +33,10 @@ npm start                    # 開發伺服器 http://localhost:4200
 npx ng build                 # production build，輸出到 dist/
 npx ng test --watch=false    # Vitest 單元測試（jsdom）
 ```
+
+## CI / 部署
+
+- `.github/workflows/ci.yml`：push 到 main 和每個 PR 都會跑測試與 build
+- `.github/workflows/deploy.yml`：main 有新 commit 時測試、build（base href 為
+  `/bisection-anything/`），並部署到 GitHub Pages。`404.html` 是 `index.html`
+  的複本，讓 `/compare`、`/share#…` 這類深層連結也能載入
