@@ -3,7 +3,11 @@
 ## 技術
 
 - Angular 22：standalone components、signals、zoneless change detection，所有元件都用 OnPush
-- Bootstrap 5.3（Sass，`src/styles.scss`）
+- Bootstrap 5.3（Sass，`src/styles.scss`）：用 `@use ... with (...)` 覆寫主色（`#4f46e5`）、圓角、字型；
+  共用的 `.panel`、`.page-header` 也定義在這裡
+- 圖示：`src/app/shared/icon.component.ts` 的 `<app-icon name="...">`，把用到的 Bootstrap Icons
+  SVG 直接寫在檔案裡，只打包實際用到的圖示。要加新圖示時，從
+  [Bootstrap Icons](https://icons.getbootstrap.com) 複製 `<svg>` 內的內容加進 `ICONS`
 - Vitest + jsdom 單元測試（`@angular/build:unit-test`）
 - 沒有後端；資料存在 localStorage
 
@@ -30,6 +34,8 @@ src/app/
 │   ├── insertion.ts      完整排序：二分插入排序、比較次數估算
 │   ├── share-codec.ts    分享連結的編碼（deflate + base64url）
 │   └── session-store.ts  signal 狀態、localStorage、JSON 匯出入、分享連結
+├── shared/
+│   └── icon.component.ts Bootstrap Icons 的 inline SVG 元件
 └── pages/
     ├── config/           設定頁
     ├── compare/          比較頁
