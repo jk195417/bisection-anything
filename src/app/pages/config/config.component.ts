@@ -63,6 +63,7 @@ import { IconComponent } from '../../shared/icon.component';
           <span class="badge rounded-pill text-bg-light border ms-auto">{{ parsed().items.length }} 項</span>
         </div>
         <textarea id="items" name="items" class="form-control" rows="8" [placeholder]="placeholder" [(ngModel)]="itemsText"></textarea>
+        <div class="form-text">想附圖片就寫成「名稱 | 圖片網址」，例如 <code>一蘭 | https://example.com/ichiran.jpg</code>。</div>
         @if (parsed().duplicates.length) {
           <div class="form-text text-warning-emphasis">
             <app-icon name="exclamation-triangle" class="me-1" />已略過重複：{{ parsed().duplicates.join('、') }}

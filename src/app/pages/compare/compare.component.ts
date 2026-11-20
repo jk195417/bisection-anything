@@ -5,6 +5,7 @@ import {
   inject,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { parseItem } from '../../core/item';
 import { Pick } from '../../core/session';
 import { SessionStore } from '../../core/session-store';
 import { IconComponent } from '../../shared/icon.component';
@@ -31,16 +32,25 @@ import { IconComponent } from '../../shared/icon.component';
       </div>
 
       <p class="text-center fs-5 fw-semibold mb-3">你比較喜歡哪一個？</p>
-      <div class="duel mb-4">
-        <button type="button" class="option" (click)="pick(0)">
-          <span class="option-name">{{ comparison.left }}</span>
-          <kbd class="d-none d-md-inline">←</kbd>
-        </button>
+      <div class="duel mb-4" [class.has-images]="hasImages()">
+        <!-- Track the item itself, so a new pair never shows the old image while the new one loads. -->
+        @for (option of options(); track $index + option.name + option.image; let i = $index) {
+          <div class="side">
+            <button type="button" class="option" (click)="pick(i)">
+              @if (option.image) {
+                <img class="option-image" [src]="option.image" [alt]="option.name" />
+              }
+              <span class="option-name">{{ option.name }}</span>
+              <kbd class="d-none d-md-inline">{{ i === 0 ? '←' : '→' }}</kbd>
+            </button>
+            @if (option.image) {
+              <a class="zoom small" [href]="option.image" target="_blank" rel="noopener">
+                <app-icon name="box-arrow-up-right" class="me-1" />看大圖
+              </a>
+            }
+          </div>
+        }
         <span class="versus">VS</span>
-        <button type="button" class="option" (click)="pick(1)">
-          <span class="option-name">{{ comparison.right }}</span>
-          <kbd class="d-none d-md-inline">→</kbd>
-        </button>
       </div>
 
       <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
@@ -55,8 +65,11 @@ import { IconComponent } from '../../shared/icon.component';
       <div class="panel text-center py-5">
         <div class="trophy mb-3"><app-icon name="trophy-fill" /></div>
         <p class="text-body-secondary mb-1">{{ store.session()?.title || '未命名' }}・比較完成</p>
-        @if (winner()) {
-          <p class="winner fs-2 fw-bold mb-4">{{ winner() }}</p>
+        @if (winner(); as winner) {
+          @if (winner.image) {
+            <img class="winner-image mb-3" [src]="winner.image" [alt]="winner.name" />
+          }
+          <p class="winner fs-2 fw-bold mb-4">{{ winner.name }}</p>
         }
         <div class="d-flex justify-content-center gap-2">
           <button type="button" class="btn btn-outline-secondary" (click)="store.undo()">
@@ -88,6 +101,55 @@ import { IconComponent } from '../../shared/icon.component';
           min-height: 7rem;
         }
       }
+    }
+
+    /* Images need room: let the duel grow past the 960px page column. */
+    .duel.has-images {
+      margin-inline: calc(50% - min(720px, 50vw - 1rem));
+
+      .option {
+        justify-content: flex-start;
+        padding: 0.75rem 0.75rem 1rem;
+      }
+
+      /* Name first, so it stays in view above a tall image. */
+      .option-name {
+        order: -1;
+        font-size: 1.25rem;
+      }
+    }
+
+    .side {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      min-width: 0;
+
+      .option {
+        flex: 1;
+      }
+    }
+
+    .option-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: var(--bs-tertiary-bg);
+      border-radius: var(--bs-border-radius);
+    }
+
+    .zoom {
+      align-self: center;
+      color: var(--bs-secondary-color);
+    }
+
+    .winner-image {
+      display: block;
+      max-width: 100%;
+      max-height: 50vh;
+      margin-inline: auto;
+      border-radius: var(--bs-border-radius);
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
     }
 
     .option {
@@ -168,8 +230,22 @@ export class CompareComponent {
     const items = this.store.session()?.items ?? [];
     const index =
       this.store.elimination()?.champion ?? this.store.insertion()?.ranking[0];
-    return index === undefined || index === null ? null : items[index];
+    return index === undefined || index === null
+      ? null
+      : parseItem(items[index]);
   });
+
+  /** The two options of the current comparison, left then right. */
+  protected readonly options = computed(() => {
+    const comparison = this.store.comparison();
+    return comparison
+      ? [parseItem(comparison.left), parseItem(comparison.right)]
+      : [];
+  });
+
+  protected readonly hasImages = computed(() =>
+    this.options().some((option) => option.image),
+  );
 
   protected pick(index: number) {
     this.store.pick(index as Pick);
