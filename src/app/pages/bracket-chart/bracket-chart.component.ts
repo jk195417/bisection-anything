@@ -7,12 +7,14 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Match, roundLabel } from '../../core/elimination';
+import { itemName } from '../../core/item';
 import { SessionStore } from '../../core/session-store';
 import { IconComponent } from '../../shared/icon.component';
+import { ItemNamePipe } from '../../shared/item-name.pipe';
 
 @Component({
   selector: 'app-bracket-chart',
-  imports: [IconComponent, RouterLink],
+  imports: [IconComponent, ItemNamePipe, RouterLink],
   template: `
     @if (store.session(); as session) {
       <div class="page-header">
@@ -50,7 +52,7 @@ import { IconComponent } from '../../shared/icon.component';
                             @for (side of [match.a, match.b]; track $index) {
                               <div class="side" [class.win]="side !== null && side === match.winner && !match.bye" [class.lose]="isLoser(match, side)">
                                 @if (side !== null) {
-                                  <span class="text-truncate">{{ session.items[side] }}</span>
+                                  <span class="text-truncate">{{ session.items[side] | itemName }}</span>
                                 } @else if (match.bye) {
                                   <span class="fst-italic">輪空</span>
                                 } @else {
@@ -74,7 +76,7 @@ import { IconComponent } from '../../shared/icon.component';
                     <div class="match champion">
                       <app-icon name="trophy-fill" />
                       @if (bracket.champion !== null) {
-                        <span class="text-truncate">{{ session.items[bracket.champion] }}</span>
+                        <span class="text-truncate">{{ session.items[bracket.champion] | itemName }}</span>
                       } @else {
                         <span class="text-body-tertiary">待定</span>
                       }
@@ -93,14 +95,14 @@ import { IconComponent } from '../../shared/icon.component';
         }
         <ol class="ranking panel p-0 mb-4" [class.finished]="store.finished()">
           @for (index of sort.ranking; track index) {
-            <li>{{ session.items[index] }}</li>
+            <li>{{ session.items[index] | itemName }}</li>
           }
         </ol>
         @if (sort.current) {
           <h3 class="h6 text-body-secondary">尚未排入</h3>
           <div class="d-flex flex-wrap gap-2 mb-4">
             @for (index of [sort.current.item].concat(sort.pending); track index) {
-              <span class="badge rounded-pill text-bg-light border fw-normal fs-6">{{ session.items[index] }}</span>
+              <span class="badge rounded-pill text-bg-light border fw-normal fs-6">{{ session.items[index] | itemName }}</span>
             }
           </div>
         }
@@ -337,10 +339,10 @@ export class BracketChartComponent {
     if (!this.store.finished()) lines.push('（尚未完成）');
     const champion = this.store.elimination()?.champion;
     if (champion !== undefined && champion !== null) {
-      lines.push(`🏆 冠軍：${session.items[champion]}`);
+      lines.push(`🏆 冠軍：${itemName(session.items[champion])}`);
     }
     this.store.insertion()?.ranking.forEach((index, rank) => {
-      lines.push(`${rank + 1}. ${session.items[index]}`);
+      lines.push(`${rank + 1}. ${itemName(session.items[index])}`);
     });
     return lines.join('\n');
   });
